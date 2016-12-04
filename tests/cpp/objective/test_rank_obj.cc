@@ -41,3 +41,17 @@ TEST(LambdaRankObjNDCG, GPair) {
                    {0.063, 0.045, 0.048, 0.374,  0.201,  0.139,  0.061,  0.129},
                    0.001);
 }
+
+TEST(LambdaRankObjMAP, GPair) {
+  xgboost::ObjFunction * obj = xgboost::ObjFunction::Create("rank:map");
+  std::vector<std::pair<std::string, std::string> > args;
+  args.push_back(std::make_pair("num_pairsample", "3"));
+  obj->Configure(args);
+  CheckObjFunction(obj,
+                   {   0,    0.1,   0.9,     1,      0,    0.1,    0.9,      1},
+                   {   0,      0,     0,     0,      1,      1,      1,      1},
+                   {   1,      1,     1,     1,      1,      1,      1,      1},
+                   {0.031, 0.029, 0.085, 0.545, -0.267, -0.306, -0.062, -0.055},
+                   {0.041, 0.036, 0.058, 0.330,  0.148,  0.185,  0.064,  0.067},
+                   0.001);
+}
