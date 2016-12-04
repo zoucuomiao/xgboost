@@ -22,6 +22,8 @@ long GetFileSize(const std::string filename);
 
 std::string CreateSimpleTestData();
 
+void DisableOpenMP();
+
 void CheckObjFunction(xgboost::ObjFunction * obj,
                       std::vector<xgboost::bst_float> preds,
                       std::vector<xgboost::bst_float> labels,

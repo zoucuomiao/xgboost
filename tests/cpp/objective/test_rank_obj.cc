@@ -3,7 +3,29 @@
 
 #include "../helpers.h"
 
+#include <random>
+#include <limits>
+#include <vector>
+#include <algorithm>
+#include <utility>
+#include <iostream>
+
+int test_rnd() {
+  std::mt19937 rnd(1111);
+  double sum = 0;
+  for (int i = 0; i < 100; i++ ) {
+    int val = std::uniform_int_distribution<unsigned>(0, 10)(rnd);
+    sum += val;
+    std::cout << val << ",";
+  }
+  std::cout << "\n";
+  std::cout << "Sum : " << sum << "\n";
+  return 0;
+}
+
 TEST(PairwiseRankObj, GPair) {
+  DisableOpenMP();
+  test_rnd();
   xgboost::ObjFunction * obj = xgboost::ObjFunction::Create("rank:pairwise");
   std::vector<std::pair<std::string, std::string> > args;
   args.push_back(std::make_pair("num_pairsample", "2"));
@@ -29,6 +51,8 @@ TEST(PairwiseRankObj, GPair) {
 }
 
 TEST(LambdaRankObjNDCG, GPair) {
+  DisableOpenMP();
+  test_rnd();
   xgboost::ObjFunction * obj = xgboost::ObjFunction::Create("rank:ndcg");
   std::vector<std::pair<std::string, std::string> > args;
   args.push_back(std::make_pair("num_pairsample", "5"));
@@ -43,6 +67,8 @@ TEST(LambdaRankObjNDCG, GPair) {
 }
 
 TEST(LambdaRankObjMAP, GPair) {
+  DisableOpenMP();
+  test_rnd();
   xgboost::ObjFunction * obj = xgboost::ObjFunction::Create("rank:map");
   std::vector<std::pair<std::string, std::string> > args;
   args.push_back(std::make_pair("num_pairsample", "3"));

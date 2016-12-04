@@ -15,6 +15,10 @@ long GetFileSize(const std::string filename) {
   return st.st_size;
 }
 
+void DisableOpenMP() {
+  omp_set_num_threads(1);
+}
+
 std::string CreateSimpleTestData() {
   std::string tmp_file = TempFileName();
   std::ofstream fo;

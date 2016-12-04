@@ -54,6 +54,7 @@ class LambdaRankObj : public ObjFunction {
     {
       // parall construct, declare random number generator here, so that each
       // thread use its own random number generator, seed by thread id and current iteration
+      LOG(CONSOLE) << "Using rand seed: " << iter * 1111 + omp_get_thread_num();
       common::RandomEngine rnd(iter * 1111 + omp_get_thread_num());
 
       std::vector<LambdaPair> pairs;
