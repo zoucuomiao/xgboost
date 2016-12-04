@@ -13,6 +13,8 @@ TEST(LinearRegression, GPair) {
                    {1,   1,   1,   1,    1,    1,    1, 1},
                    {0, 0.1, 0.9, 1.0, -1.0, -0.9, -0.1, 0},
                    {1,   1,   1,   1,    1,    1,    1, 1});
+
+  ASSERT_NO_THROW(obj->DefaultEvalMetric());
 }
 
 TEST(LogisticRegression, GPair) {
@@ -25,6 +27,31 @@ TEST(LogisticRegression, GPair) {
                    {   1,    1,    1,    1,    1,     1,     1,     1},
                    { 0.5, 0.52, 0.71, 0.73, -0.5, -0.47, -0.28, -0.26},
                    {0.25, 0.24, 0.20, 0.19, 0.25,  0.24,  0.20,  0.19});
+}
+
+TEST(LogisticRegression, Basic) {
+  xgboost::ObjFunction * obj = xgboost::ObjFunction::Create("reg:logistic");
+  std::vector<std::pair<std::string, std::string> > args;
+  obj->Configure(args);
+
+  // test label validation
+  EXPECT_ANY_THROW(CheckObjFunction(obj, {0}, {10}, {1}, {0}, {0}))
+    << "Expected error when label not in range [0,1] for LogisticRegression";
+
+  // test ProbToMargin
+  EXPECT_NEAR(obj->ProbToMargin(0.1), -2.197, 0.01);
+  EXPECT_NEAR(obj->ProbToMargin(0.5), 0, 0.01);
+  EXPECT_NEAR(obj->ProbToMargin(0.9), 2.197, 0.01);
+  EXPECT_ANY_THROW(obj->ProbToMargin(10))
+    << "Expected error when base_score not in range [0,1] for LogisticRegression";
+
+  // test PredTransform
+  std::vector<xgboost::bst_float> preds = {0, 0.1, 0.5, 0.9, 1};
+  std::vector<xgboost::bst_float> out_preds = {0.5, 0.524, 0.622, 0.710, 0.731};
+  obj->PredTransform(&preds);
+  for (int i = 0; i < preds.size(); ++i) {
+    EXPECT_NEAR(preds[i], out_preds[i], 0.01);
+  }
 }
 
 TEST(LogisticRaw, GPair) {
