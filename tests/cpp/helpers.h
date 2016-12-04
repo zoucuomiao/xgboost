@@ -27,6 +27,7 @@ void CheckObjFunction(xgboost::ObjFunction * obj,
                       std::vector<xgboost::bst_float> labels,
                       std::vector<xgboost::bst_float> weights,
                       std::vector<xgboost::bst_float> out_grad,
-                      std::vector<xgboost::bst_float> out_hess);
+                      std::vector<xgboost::bst_float> out_hess,
+                      double double_error = 0.01);
 
 #endif

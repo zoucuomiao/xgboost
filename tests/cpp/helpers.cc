@@ -30,7 +30,8 @@ void CheckObjFunction(xgboost::ObjFunction * obj,
                       std::vector<xgboost::bst_float> labels,
                       std::vector<xgboost::bst_float> weights,
                       std::vector<xgboost::bst_float> out_grad,
-                      std::vector<xgboost::bst_float> out_hess) {
+                      std::vector<xgboost::bst_float> out_hess,
+                      double double_error) {
   xgboost::MetaInfo info;
   info.num_row = labels.size();
   info.labels = labels;
@@ -41,10 +42,10 @@ void CheckObjFunction(xgboost::ObjFunction * obj,
 
   ASSERT_EQ(gpair.size(), preds.size());
   for (int i = 0; i < gpair.size(); ++i) {
-    EXPECT_NEAR(gpair[i].grad, out_grad[i], 0.01)
+    EXPECT_NEAR(gpair[i].grad, out_grad[i], double_error)
       << "Unexpected grad for pred=" << preds[i] << " label=" << labels[i]
       << " weight=" << weights[i];
-    EXPECT_NEAR(gpair[i].hess, out_hess[i], 0.01)
+    EXPECT_NEAR(gpair[i].hess, out_hess[i], double_error)
       << "Unexpected hess for pred=" << preds[i] << " label=" << labels[i]
       << " weight=" << weights[i];
   }

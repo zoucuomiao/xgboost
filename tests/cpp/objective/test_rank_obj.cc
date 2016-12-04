@@ -27,3 +27,17 @@ TEST(PairwiseRankObj, GPair) {
 
   ASSERT_NO_THROW(obj->DefaultEvalMetric());
 }
+
+TEST(LambdaRankObjNDCG, GPair) {
+  xgboost::ObjFunction * obj = xgboost::ObjFunction::Create("rank:ndcg");
+  std::vector<std::pair<std::string, std::string> > args;
+  args.push_back(std::make_pair("num_pairsample", "5"));
+  obj->Configure(args);
+  CheckObjFunction(obj,
+                   {    0,   0.1,   0.9,     1,      0,    0.1,    0.9,      1},
+                   {    0,     0,     0,     0,      1,      1,      1,      1},
+                   {    1,     1,     1,     1,      1,      1,      1,      1},
+                   {0.045, 0.035, 0.062, 0.619, -0.364, -0.234, -0.058, -0.106},
+                   {0.063, 0.045, 0.048, 0.374,  0.201,  0.139,  0.061,  0.129},
+                   0.001);
+}
