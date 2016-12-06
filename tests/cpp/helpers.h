@@ -23,6 +23,8 @@ long GetFileSize(const std::string filename);
 
 std::string CreateSimpleTestData();
 
+std::string Create5NodeModellingData();
+
 void CheckObjFunction(xgboost::ObjFunction * obj,
                       std::vector<xgboost::bst_float> preds,
                       std::vector<xgboost::bst_float> labels,

@@ -25,6 +25,25 @@ std::string CreateSimpleTestData() {
   return tmp_file;
 }
 
+// The data can be split perfectly using 5 nodes (2 splits)
+std::string Create5NodeModellingData() {
+  std::string tmp_file = TempFileName();
+  std::ofstream fo;
+  fo.open(tmp_file);
+  fo << "0 0:0.0 1:0.1\n";
+  fo << "0 0:0.1 1:0.3\n";
+  fo << "0 0:0.2 1:0.5\n";
+  fo << "0 0:0.8 1:0.7\n";
+  fo << "0 0:0.9 1:0.9\n";
+  fo << "1 0:0.3 1:0.1\n";
+  fo << "1 0:0.4 1:0.3\n";
+  fo << "1 0:0.5 1:0.5\n";
+  fo << "1 0:0.6 1:0.7\n";
+  fo << "1 0:0.7 1:0.9\n";
+  fo.close();
+  return tmp_file;
+}
+
 void CheckObjFunction(xgboost::ObjFunction * obj,
                       std::vector<xgboost::bst_float> preds,
                       std::vector<xgboost::bst_float> labels,
